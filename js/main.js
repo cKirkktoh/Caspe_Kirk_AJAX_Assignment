@@ -63,26 +63,6 @@
     });
   }
 
-  function loadInfoBoxes() {
-
-    //make AJAX call here
-
-    infoBoxes.forEach((infoBox, index) => {
-      let selected = document.querySelector(`#hotspot-${index+1}`);
-      
-      const titleElement = document.createElement('h2');
-      titleElement.textContent = infoBox.title;
-
-      const textElement = document.createElement('p');
-      textElement.textContent = infoBox.text;
-
-      selected.appendChild(titleElement);
-      selected.appendChild(textElement);
-    });
-  }
-  loadInfoBoxes();
-
-
   function showInfo() {
     let selected = document.querySelector(`#${this.slot}`);
     gsap.to(selected, 1, { autoAlpha: 1 });
@@ -101,8 +81,8 @@
     hotspot.addEventListener("mouseleave", hideInfo);
   });
 
-  function getData() {
-   // model.innerHTML = spinner;
+  function loadInfoBoxes() {
+    function getData() {
     fetch("https://swiftpixel.com/earbud/api/infoboxes")
     .then(response => response.json())
     .then(info => {
@@ -110,26 +90,72 @@
 
       info.forEach((infoBox, index) => {
       let info = document.querySelector(`#hotspot-${index+1}`);
-
+      
       const titleElement = document.createElement('h2');
       titleElement.textContent = infoBox.heading;
+
       const textElement = document.createElement('p');
       textElement.textContent = infoBox.description;
 
-      const imgElement = document.createElement('img');
-      imgElement.src = infoBox.thumbnail;
+       const imgElement = document.createElement('img');
+       imgElement.src = `images/${infoBox.thumbnail}`; 
 
       info.appendChild(titleElement);
       info.appendChild(textElement);
       info.appendChild(imgElement);
-      });
-
-      
+    });
+    
     })
     .catch(error => console.error(error)); //catch and report any errors
+    
   }
+    getData();
+  }
+  loadInfoBoxes();
 
   getData();
-
+  function showLoadingIndicator() {
+    const spinner = document.getElementById('loading-spinner');
+    spinner.style.display = 'block';
+  }
+  
+  function hideLoadingIndicator() {
+    const spinner = document.getElementById('loading-spinner');
+    spinner.style.display = 'none';
+  }
+  
 })();
 
+//loadMateraials
+function loadMateraialsBox(){
+  function getData() {
+  fetch("https://swiftpixel.com/earbud/api/materials")
+  .then(respone => respone.json())
+  .then(materials => {
+    console.log(materials);
+
+    let ul = document.createElement("ul")
+
+    materials.forEach((materialsBox)=> {
+      const li = document.createElement("li");
+
+      const h3 = document.createElement("h3");
+      h3.textContent = materialsBox.heading;
+      
+      const p = document.createElement("p");
+      p.textContent = materialsBox.description;
+
+
+      li.appendChild(h3);
+      li.appendChild(p);
+      ul.appendChild(li);
+
+      marterialsCon.appendChild(ul);
+    });
+  })
+     .catch(error => console.error(error)); //catch and report any errors
+
+  }
+  getData();
+}
+loadMateraialsBox();
