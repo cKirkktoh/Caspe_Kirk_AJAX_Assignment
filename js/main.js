@@ -101,5 +101,35 @@
     hotspot.addEventListener("mouseleave", hideInfo);
   });
 
+  function getData() {
+   // model.innerHTML = spinner;
+    fetch("https://swiftpixel.com/earbud/api/infoboxes")
+    .then(response => response.json())
+    .then(info => {
+      console.log(info);
+
+      info.forEach((infoBox, index) => {
+      let info = document.querySelector(`#hotspot-${index+1}`);
+
+      const titleElement = document.createElement('h2');
+      titleElement.textContent = infoBox.heading;
+      const textElement = document.createElement('p');
+      textElement.textContent = infoBox.description;
+
+      const imgElement = document.createElement('img');
+      imgElement.src = infoBox.thumbnail;
+
+      info.appendChild(titleElement);
+      info.appendChild(textElement);
+      info.appendChild(imgElement);
+      });
+
+      
+    })
+    .catch(error => console.error(error)); //catch and report any errors
+  }
+
+  getData();
+
 })();
 
